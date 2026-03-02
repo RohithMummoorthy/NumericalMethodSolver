@@ -1,0 +1,78 @@
+/* ══════════════════════════════════════════════════════════════════════════
+   METHODS.CSS — Method-panel specific styles
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Method Panels ───────────────────────────────────────────────────────── */
+.method-panel {
+  padding-top: 4px;
+}
+
+/* ── Input Card ──────────────────────────────────────────────────────────── */
+.input-card { }
+.result-card { }
+
+/* ── Graph sizing ─────────────────────────────────────────────────────────── */
+.graph-card .canvas-wrap {
+  height: 320px;
+}
+
+.graph-card .result-graph {
+  position: absolute;
+  inset: 0;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* The canvas-wrap must be relatively positioned for absolute canvas */
+.canvas-wrap {
+  position: relative;
+  height: 320px;
+}
+
+/* ── Highlighted Table Row ─────────────────────────────────────────────── */
+.data-table tr.highlight-row td {
+  background: rgba(255, 255, 255, 0.05) !important;
+  color: var(--clr-white) !important;
+  font-weight: 700;
+}
+
+/* ── RK4 specific ─────────────────────────────────────────────────────────── */
+#panel-rk4 .form-row {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+/* ── Convergence progress bar inline ─────────────────────────────────────── */
+.convergence-bar-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 16px;
+}
+
+.conv-bar-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: var(--clr-muted);
+}
+
+.conv-bar-outer {
+  height: 4px;
+  background: var(--clr-border);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.conv-bar-inner {
+  height: 100%;
+  background: var(--clr-white);
+  border-radius: 2px;
+  box-shadow: 0 0 8px rgba(255,255,255,0.6);
+  transition: width 0.6s var(--ease-smooth);
+  width: 0%;
+}
+
+/* ── NR Convergence ring canvas ──────────────────────────────────────────── */
+#nr-convergence-ring {
+  display: block;
+}

@@ -1,0 +1,226 @@
+/* ══════════════════════════════════════════════════════════════════════════
+   RESPONSIVE.CSS — Breakpoints: Desktop → Tablet → Mobile → XS
+   Fully updated for bigger fonts + lighter background
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Large screens (≥ 1400px) ─────────────────────────────────────────── */
+@media (min-width: 1400px) {
+  #main-content { max-width: 1440px; }
+  .panel-title  { font-size: 38px; }
+}
+
+/* ── Medium-large (1200–1400px) ───────────────────────────────────────── */
+@media (min-width: 1200px) and (max-width: 1399px) {
+  #main-content { max-width: 1300px; }
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   TABLET  ≤ 960px
+   ══════════════════════════════════════════════════════════════════════════ */
+@media (max-width: 960px) {
+  /* Layout */
+  .layout-two-col {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .panel-header {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .glass-tag { align-self: flex-start; }
+
+  /* Nav */
+  .brand-full { display: none; }
+  .nav-tabs   { gap: 4px; }
+
+  .tab-btn   { padding: 8px 14px; font-size: 14px; }
+  .tab-label { font-size: 13px; }
+
+  /* Content */
+  #main-content {
+    padding-top: calc(var(--nav-h) + 18px);
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .glass-card { padding: 22px; }
+
+  /* Panels */
+  .panel-title    { font-size: clamp(24px, 4vw, 32px); }
+  .panel-subtitle { font-size: 14px; }
+
+  /* Forms */
+  .form-input { font-size: 15px; padding: 11px 14px; }
+  .form-label { font-size: 12px; }
+
+  /* Graph */
+  .canvas-wrap { height: 260px; }
+
+  /* Table */
+  .data-table      { font-size: 13px; }
+  .data-table th   { font-size: 11px; padding: 10px 12px; }
+  .data-table td   { padding: 8px 12px; }
+
+  /* Stats */
+  .stat-value { font-size: 17px; }
+  .stat-label { font-size: 11px; }
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   MOBILE  ≤ 640px
+   ══════════════════════════════════════════════════════════════════════════ */
+@media (max-width: 640px) {
+  :root {
+    --nav-h:    58px;
+    --card-pad: 18px;
+    --gap:      14px;
+  }
+
+  /* ── Navbar ── */
+  .nav-inner  { padding: 0 12px; gap: 10px; }
+  .nav-tabs   { gap: 2px; flex: 1; justify-content: flex-end; }
+  .tab-btn    { padding: 7px 10px; border-radius: 8px; }
+  .tab-label  { display: none; }           /* icon-only on mobile */
+  .tab-icon   { font-size: 20px; }
+  .nav-brand  { font-size: 13px; }
+  .brand-full { display: none; }
+
+  /* ── Main layout ── */
+  #main-content {
+    padding-top: calc(var(--nav-h) + 12px);
+    padding-left: 12px;
+    padding-right: 12px;
+    padding-bottom: 48px;
+  }
+
+  /* ── Cards ── */
+  .glass-card {
+    padding: var(--card-pad);
+    border-radius: 14px;
+  }
+
+  /* ── Panel header ── */
+  .panel-title    { font-size: 24px; }
+  .panel-subtitle { font-size: 13px; }
+  .glass-tag      { font-size: 11px; padding: 6px 10px; }
+
+  /* ── Card titles ── */
+  .card-title { font-size: 12px; margin-bottom: 14px; }
+
+  /* ── Forms ── */
+  .form-label   { font-size: 12px; }
+  .form-hint    { font-size: 11px; }
+  .form-input   { font-size: 15px; padding: 10px 12px; }
+  .input-prefix { font-size: 12px; padding: 10px 10px; }
+
+  .form-row {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .example-btn { font-size: 12px; padding: 5px 10px; }
+  .example-label { font-size: 11px; }
+
+  /* ── Solve button ── */
+  .solve-btn { font-size: 15px; padding: 13px 20px; }
+
+  /* ── Stats grid ── */
+  .stat-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .stat-value { font-size: 16px; }
+  .stat-label { font-size: 11px; }
+  .stat-item  { padding: 12px; }
+
+  /* ── Graph ── */
+  .canvas-wrap  { height: 220px; }
+  .graph-header { flex-direction: column; align-items: flex-start; gap: 8px; }
+  .graph-actions { gap: 6px; }
+  .icon-btn     { font-size: 12px; padding: 6px 12px; }
+
+  /* ── Slider ── */
+  .slider-label   { font-size: 12px; }
+  .slider-value   { font-size: 13px; }
+
+  /* ── Table ── */
+  .table-scroll   { max-height: 320px; }
+  .data-table     { font-size: 12px; }
+  .data-table th  { font-size: 10px; padding: 8px 10px; white-space: nowrap; }
+  .data-table td  { padding: 7px 10px; }
+
+  /* ── Lagrange points ── */
+  .point-row      { grid-template-columns: 20px 1fr 1fr; gap: 6px; }
+  .point-index    { font-size: 11px; }
+  .points-actions { gap: 6px; flex-wrap: wrap; }
+  .ghost-btn      { font-size: 13px; padding: 7px 12px; }
+
+  /* ── Toast ── */
+  #toast-container { bottom: 14px; right: 12px; left: 12px; }
+  .toast           { max-width: 100%; font-size: 14px; padding: 12px 14px; }
+
+  /* ── Intro overlay ── */
+  #intro-title { font-size: 26px; }
+  #intro-sub   { font-size: 12px; }
+  #intro-logo  { font-size: 16px; }
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   EXTRA-SMALL  ≤ 400px
+   ══════════════════════════════════════════════════════════════════════════ */
+@media (max-width: 400px) {
+  :root { --nav-h: 54px; }
+
+  .panel-title    { font-size: 20px; }
+  .form-row       { grid-template-columns: 1fr; }
+  .stat-grid      { grid-template-columns: 1fr; }
+  .layout-two-col { gap: 12px; }
+
+  .glass-card   { padding: 14px; border-radius: 12px; }
+  .canvas-wrap  { height: 190px; }
+  .data-table   { font-size: 11px; }
+  .data-table th { font-size: 9px; padding: 6px 8px; }
+  .data-table td { padding: 6px 8px; }
+
+  .solve-btn  { font-size: 14px; padding: 12px 16px; }
+  .tab-icon   { font-size: 17px; }
+  .tab-btn    { padding: 6px 8px; }
+
+  #intro-title { font-size: 22px; }
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   TOUCH DEVICES — better tap targets
+   ══════════════════════════════════════════════════════════════════════════ */
+@media (hover: none) and (pointer: coarse) {
+  .tab-btn     { min-height: 44px; }
+  .solve-btn   { min-height: 50px; }
+  .ghost-btn   { min-height: 40px; }
+  .icon-btn    { min-height: 38px; }
+  .example-btn { min-height: 36px; }
+
+  /* Remove hover effects that don't work on touch */
+  .glass-card:hover    { border-color: var(--clr-border); }
+  .data-table tbody tr:hover td { background: transparent; color: var(--clr-text); }
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   PRINT
+   ══════════════════════════════════════════════════════════════════════════ */
+@media print {
+  #navbar, #intro-overlay, #bg-canvas,
+  .solve-btn, .graph-actions, .slider-section,
+  .points-actions, .example-btn, .example-label,
+  .input-examples { display: none !important; }
+
+  body { background: #ffffff; color: #000000; }
+  .glass-card {
+    border: 1px solid #cccccc;
+    background: #ffffff;
+    box-shadow: none;
+    backdrop-filter: none;
+  }
+  .panel-title, .card-title, .stat-value { color: #000000; }
+  .stat-label, .panel-subtitle { color: #444444; }
+  .data-table th { background: #f0f0f0; color: #000000; }
+  .data-table td { color: #222222; border-color: #dddddd; }
+}

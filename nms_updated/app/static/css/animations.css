@@ -1,0 +1,273 @@
+/* ══════════════════════════════════════════════════════════════════════════
+   ANIMATIONS.CSS — Keyframes, transitions, intro, micro-interactions
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Keyframes ───────────────────────────────────────────────────────────── */
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes fadeSlideUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeSlideDown {
+  from { opacity: 0; transform: translateY(-12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.92); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.5; transform: scale(0.88); }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position:  200% 0; }
+}
+
+@keyframes rowSlideIn {
+  from { opacity: 0; transform: translateX(-14px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes glowPulse {
+  0%, 100% { box-shadow: 0 0 0 rgba(255,255,255,0); }
+  50%       { box-shadow: 0 0 24px rgba(255,255,255,0.06); }
+}
+
+@keyframes loaderBar {
+  0%   { width: 0%; }
+  60%  { width: 75%; }
+  90%  { width: 92%; }
+  100% { width: 100%; }
+}
+
+@keyframes dotBounce {
+  0%, 80%, 100% { transform: scaleY(0.4); opacity: 0.4; }
+  40%            { transform: scaleY(1);   opacity: 1; }
+}
+
+@keyframes borderFlow {
+  0%   { background-position: 0% 50%;   }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%;   }
+}
+
+@keyframes toastSlide {
+  from { opacity: 0; transform: translateX(120%); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes toastOut {
+  from { opacity: 1; transform: translateX(0); }
+  to   { opacity: 0; transform: translateX(120%); }
+}
+
+@keyframes introFadeOut {
+  0%   { opacity: 1; }
+  100% { opacity: 0; pointer-events: none; }
+}
+
+@keyframes appFadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes ripple {
+  0%   { transform: scale(0); opacity: 0.5; }
+  100% { transform: scale(4); opacity: 0; }
+}
+
+/* ── Intro Overlay ────────────────────────────────────────────────────────── */
+#intro-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--clr-bg);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  pointer-events: all;
+  transition: opacity 0.8s var(--ease-smooth);
+}
+
+#intro-overlay.fade-out {
+  opacity: 0;
+  pointer-events: none;
+  animation: introFadeOut 0.8s var(--ease-smooth) forwards;
+}
+
+#intro-canvas {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+#intro-content {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  animation: fadeSlideUp 0.9s var(--ease-smooth) 0.2s both;
+}
+
+#intro-logo {
+  font-family: var(--font-mono);
+  font-size: clamp(18px, 3vw, 24px);
+  color: var(--clr-muted);
+  letter-spacing: 0.2em;
+  margin-bottom: 24px;
+}
+
+#intro-logo .logo-bracket { color: var(--clr-white); }
+#intro-logo .logo-text    { color: var(--clr-muted); margin: 0 4px; }
+
+#intro-title {
+  font-family: var(--font-display);
+  font-size: clamp(28px, 5vw, 52px);
+  font-weight: 800;
+  color: var(--clr-white);
+  letter-spacing: -0.02em;
+  margin-bottom: 10px;
+}
+
+#intro-sub {
+  color: var(--clr-muted);
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 36px;
+}
+
+#intro-loader {
+  width: min(320px, 80vw);
+  height: 2px;
+  background: var(--clr-border);
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+#intro-loader-bar {
+  height: 100%;
+  background: var(--clr-white);
+  border-radius: 99px;
+  width: 0%;
+  animation: loaderBar 2.2s var(--ease-smooth) 0.6s forwards;
+  box-shadow: 0 0 8px rgba(255,255,255,0.8);
+}
+
+/* ── App entrance ─────────────────────────────────────────────────────────── */
+#app {
+  transition: opacity 0.6s var(--ease-smooth), transform 0.6s var(--ease-smooth);
+}
+
+#app.app-hidden {
+  opacity: 0;
+  transform: translateY(6px);
+  pointer-events: none;
+}
+
+#app.app-visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: all;
+}
+
+/* ── Panel transitions ────────────────────────────────────────────────────── */
+.method-panel {
+  display: none;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity var(--dur-normal) var(--ease-smooth),
+              transform var(--dur-normal) var(--ease-smooth);
+}
+
+.method-panel.active {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+  animation: scaleIn 0.35s var(--ease-smooth) both;
+}
+
+/* ── Cards appearing ──────────────────────────────────────────────────────── */
+.glass-card {
+  animation: fadeSlideUp 0.4s var(--ease-smooth) both;
+}
+.glass-card:nth-child(1) { animation-delay: 0ms; }
+.glass-card:nth-child(2) { animation-delay: 60ms; }
+.glass-card:nth-child(3) { animation-delay: 120ms; }
+.glass-card:nth-child(4) { animation-delay: 180ms; }
+
+/* ── Table row reveal ─────────────────────────────────────────────────────── */
+.data-table tbody tr {
+  opacity: 0;
+  animation: rowSlideIn 0.3s var(--ease-smooth) both;
+}
+
+/* ── Solve button loading ─────────────────────────────────────────────────── */
+.solve-btn.loading .btn-text::after {
+  content: '';
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border: 1.5px solid rgba(255,255,255,0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  margin-left: 8px;
+  vertical-align: middle;
+}
+
+.solve-btn.loading .btn-icon { opacity: 0; width: 0; overflow: hidden; }
+
+/* ── Status dot ────────────────────────────────────────────────────────────── */
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  transition: background var(--dur-normal) var(--ease-smooth);
+}
+.status-dot.idle    { background: var(--clr-muted-2); }
+.status-dot.running { background: var(--clr-warning); animation: pulse 1s infinite; }
+.status-dot.success { background: var(--clr-success); }
+.status-dot.error   { background: var(--clr-error); }
+
+/* ── Toast animation ─────────────────────────────────────────────────────── */
+.toast {
+  animation: toastSlide 0.35s var(--ease-spring) both;
+}
+.toast.removing {
+  animation: toastOut 0.3s var(--ease-smooth) forwards;
+}
+
+/* ── Btn ripple ──────────────────────────────────────────────────────────── */
+.btn-ripple {
+  position: absolute;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  pointer-events: none;
+  background: rgba(255,255,255,0.15);
+  animation: ripple 0.55s ease-out forwards;
+  transform: scale(0);
+  opacity: 0;
+}
+
+/* ── Card hover glow ─────────────────────────────────────────────────────── */
+.glass-card {
+  animation: glowPulse 6s ease-in-out infinite;
+}

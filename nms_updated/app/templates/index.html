@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Numerical Methods Solver</title>
+
+  <!-- Fonts: Syne (display) + JetBrains Mono (code) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@300;400;500;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <link rel="stylesheet" href="/static/css/base.css" />
+  <link rel="stylesheet" href="/static/css/animations.css" />
+  <link rel="stylesheet" href="/static/css/components.css" />
+  <link rel="stylesheet" href="/static/css/methods.css" />
+  <link rel="stylesheet" href="/static/css/responsive.css" />
+</head>
+<body>
+
+  <!-- ═══ INTRO OVERLAY ═══════════════════════════════════════════════════ -->
+  <div id="intro-overlay">
+    <canvas id="intro-canvas"></canvas>
+    <div id="intro-content">
+      <div id="intro-logo">
+        <span class="logo-bracket">[</span>
+        <span class="logo-text">NMS</span>
+        <span class="logo-bracket">]</span>
+      </div>
+      <h1 id="intro-title">Numerical Methods Solver</h1>
+      <p id="intro-sub">Advanced computational mathematics suite</p>
+      <div id="intro-loader">
+        <div id="intro-loader-bar"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ ANIMATED BACKGROUND ════════════════════════════════════════════ -->
+  <canvas id="bg-canvas"></canvas>
+
+  <!-- ═══ APP SHELL ═══════════════════════════════════════════════════════ -->
+  <div id="app" class="app-hidden">
+
+    <!-- NAV ───────────────────────────────────────────────────────────── -->
+    <header id="navbar">
+      <div class="nav-inner">
+        <div class="nav-brand">
+          <span class="brand-bracket">[</span>
+          <span class="brand-name">NMS</span>
+          <span class="brand-bracket">]</span>
+          <span class="brand-full">Numerical Methods Solver</span>
+        </div>
+        <nav class="nav-tabs" role="tablist" aria-label="Method Selection">
+          <button
+            class="tab-btn active"
+            role="tab"
+            data-method="newton"
+            aria-selected="true"
+            aria-controls="panel-newton"
+          >
+            <span class="tab-icon">∿</span>
+            <span class="tab-label">Newton-Raphson</span>
+          </button>
+          <button
+            class="tab-btn"
+            role="tab"
+            data-method="lagrange"
+            aria-selected="false"
+            aria-controls="panel-lagrange"
+          >
+            <span class="tab-icon">Σ</span>
+            <span class="tab-label">Lagrange</span>
+          </button>
+          <button
+            class="tab-btn"
+            role="tab"
+            data-method="rk4"
+            aria-selected="false"
+            aria-controls="panel-rk4"
+          >
+            <span class="tab-icon">∂</span>
+            <span class="tab-label">Runge-Kutta 4</span>
+          </button>
+        </nav>
+        <div class="nav-actions">
+          <div id="status-dot" class="status-dot idle" title="System idle"></div>
+        </div>
+      </div>
+    </header>
+
+    <!-- MAIN CONTENT ───────────────────────────────────────────────────── -->
+    <main id="main-content">
+
+      <!-- ── NEWTON-RAPHSON PANEL ──────────────────────────────────── -->
+      <section
+        id="panel-newton"
+        class="method-panel active"
+        role="tabpanel"
+        aria-labelledby="tab-newton"
+      >
+        <div class="panel-header">
+          <div class="panel-title-group">
+            <h2 class="panel-title">Newton-Raphson</h2>
+            <p class="panel-subtitle">
+              Find roots of f(x) = 0 via iterative tangent linearisation
+            </p>
+          </div>
+          <div class="panel-formula glass-tag">
+            x<sub>n+1</sub> = x<sub>n</sub> − f(x<sub>n</sub>) / f′(x<sub>n</sub>)
+          </div>
+        </div>
+
+        <div class="layout-two-col">
+          <!-- INPUT CARD -->
+          <div class="glass-card input-card">
+            <h3 class="card-title">Parameters</h3>
+
+            <div class="form-group">
+              <label class="form-label" for="nr-function">
+                Function <span class="form-hint">f(x) = 0</span>
+              </label>
+              <div class="input-wrapper">
+                <span class="input-prefix">f(x) =</span>
+                <input
+                  id="nr-function"
+                  class="form-input mono"
+                  type="text"
+                  placeholder="x**3 - x - 2"
+                  autocomplete="off"
+                  spellcheck="false"
+                />
+              </div>
+              <div class="input-examples">
+                <span class="example-label">Examples:</span>
+                <button class="example-btn" data-input="nr-function" data-value="x**3 - x - 2">x³−x−2</button>
+                <button class="example-btn" data-input="nr-function" data-value="cos(x) - x">cos(x)−x</button>
+                <button class="example-btn" data-input="nr-function" data-value="exp(x) - 3*x">eˣ−3x</button>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="nr-x0">Initial Guess x₀</label>
+                <input id="nr-x0" class="form-input mono" type="number" value="1.5" step="0.1" />
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="nr-tolerance">Tolerance</label>
+                <input id="nr-tolerance" class="form-input mono" type="number" value="0.0000001" step="any" />
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="nr-max-iter">Max Iterations</label>
+                <input id="nr-max-iter" class="form-input mono" type="number" value="100" min="1" max="500" />
+              </div>
+            </div>
+
+            <button id="nr-solve-btn" class="solve-btn" data-method="newton">
+              <span class="btn-icon">▶</span>
+              <span class="btn-text">Solve</span>
+              <div class="btn-ripple"></div>
+            </button>
+          </div>
+
+          <!-- RESULT CARD -->
+          <div class="glass-card result-card" id="nr-result-card">
+            <div class="result-placeholder" id="nr-result-placeholder">
+              <div class="placeholder-icon">∿</div>
+              <p>Run the solver to see results</p>
+            </div>
+            <div class="result-content hidden" id="nr-result-content">
+              <h3 class="card-title">Result</h3>
+              <div class="stat-grid" id="nr-stats"></div>
+              <div class="convergence-ring-wrap">
+                <canvas id="nr-convergence-ring" width="120" height="120"></canvas>
+                <div class="ring-label" id="nr-ring-label">—</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- GRAPH + ITERATION SLIDER -->
+        <div class="glass-card graph-card hidden" id="nr-graph-card">
+          <div class="graph-header">
+            <h3 class="card-title">Convergence Graph</h3>
+            <div class="graph-actions">
+              <button class="icon-btn" id="nr-export-graph" title="Export graph as PNG">
+                ⤓ PNG
+              </button>
+              <button class="icon-btn" id="nr-export-pdf" title="Export PDF report">
+                ⬇ PDF
+              </button>
+            </div>
+          </div>
+          <div class="canvas-wrap">
+            <canvas id="nr-graph" class="result-graph"></canvas>
+            <div class="graph-tooltip" id="nr-graph-tooltip"></div>
+          </div>
+          <div class="slider-section">
+            <label class="slider-label">
+              Replay Iterations
+              <span class="slider-value" id="nr-slider-val">0</span>
+            </label>
+            <input
+              id="nr-iter-slider"
+              class="iter-slider"
+              type="range"
+              min="0"
+              max="0"
+              value="0"
+            />
+          </div>
+        </div>
+
+        <!-- ITERATION TABLE -->
+        <div class="glass-card table-card hidden" id="nr-table-card">
+          <h3 class="card-title">Iteration Table</h3>
+          <div class="table-scroll">
+            <table class="data-table" id="nr-table">
+              <thead>
+                <tr>
+                  <th>Iter</th>
+                  <th>xₙ</th>
+                  <th>f(xₙ)</th>
+                  <th>f′(xₙ)</th>
+                  <th>x₍ₙ₊₁₎</th>
+                  <th>|Error|</th>
+                </tr>
+              </thead>
+              <tbody id="nr-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── LAGRANGE PANEL ────────────────────────────────────────── -->
+      <section
+        id="panel-lagrange"
+        class="method-panel"
+        role="tabpanel"
+        aria-labelledby="tab-lagrange"
+      >
+        <div class="panel-header">
+          <div class="panel-title-group">
+            <h2 class="panel-title">Lagrange Interpolation</h2>
+            <p class="panel-subtitle">
+              Construct a polynomial through given data points
+            </p>
+          </div>
+          <div class="panel-formula glass-tag">
+            P(x) = Σ yᵢ · Lᵢ(x)
+          </div>
+        </div>
+
+        <div class="layout-two-col">
+          <div class="glass-card input-card">
+            <h3 class="card-title">Parameters</h3>
+
+            <div class="form-group">
+              <label class="form-label">
+                Data Points
+                <span class="form-hint">Enter x and y values</span>
+              </label>
+              <div id="lagrange-points-container" class="points-container">
+                <!-- Dynamic point rows injected by JS -->
+              </div>
+              <div class="points-actions">
+                <button class="ghost-btn" id="lagrange-add-point">+ Add Point</button>
+                <button class="ghost-btn danger" id="lagrange-remove-point">− Remove Last</button>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="lagrange-x-target">
+                Interpolate at x =
+              </label>
+              <input
+                id="lagrange-x-target"
+                class="form-input mono"
+                type="number"
+                value="2.5"
+                step="any"
+              />
+            </div>
+
+            <div class="form-group">
+              <span class="example-label">Quick datasets:</span>
+              <div class="example-row">
+                <button class="example-btn" id="lagrange-preset-1">sin(x)</button>
+                <button class="example-btn" id="lagrange-preset-2">x²</button>
+                <button class="example-btn" id="lagrange-preset-3">eˣ</button>
+              </div>
+            </div>
+
+            <button id="lagrange-solve-btn" class="solve-btn" data-method="lagrange">
+              <span class="btn-icon">▶</span>
+              <span class="btn-text">Interpolate</span>
+              <div class="btn-ripple"></div>
+            </button>
+          </div>
+
+          <div class="glass-card result-card" id="lagrange-result-card">
+            <div class="result-placeholder" id="lagrange-result-placeholder">
+              <div class="placeholder-icon">Σ</div>
+              <p>Enter data points and run interpolation</p>
+            </div>
+            <div class="result-content hidden" id="lagrange-result-content">
+              <h3 class="card-title">Result</h3>
+              <div class="stat-grid" id="lagrange-stats"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="glass-card graph-card hidden" id="lagrange-graph-card">
+          <div class="graph-header">
+            <h3 class="card-title">Interpolation Curve</h3>
+            <div class="graph-actions">
+              <button class="icon-btn" id="lagrange-export-graph">⤓ PNG</button>
+              <button class="icon-btn" id="lagrange-export-pdf">⬇ PDF</button>
+            </div>
+          </div>
+          <div class="canvas-wrap">
+            <canvas id="lagrange-graph" class="result-graph"></canvas>
+            <div class="graph-tooltip" id="lagrange-graph-tooltip"></div>
+          </div>
+        </div>
+
+        <div class="glass-card table-card hidden" id="lagrange-table-card">
+          <h3 class="card-title">Basis Polynomial Table</h3>
+          <div class="table-scroll">
+            <table class="data-table" id="lagrange-table">
+              <thead>
+                <tr>
+                  <th>i</th>
+                  <th>xᵢ</th>
+                  <th>yᵢ</th>
+                  <th>Lᵢ(x_target)</th>
+                  <th>Denominator</th>
+                </tr>
+              </thead>
+              <tbody id="lagrange-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── RUNGE-KUTTA PANEL ──────────────────────────────────────── -->
+      <section
+        id="panel-rk4"
+        class="method-panel"
+        role="tabpanel"
+        aria-labelledby="tab-rk4"
+      >
+        <div class="panel-header">
+          <div class="panel-title-group">
+            <h2 class="panel-title">Runge-Kutta 4th Order</h2>
+            <p class="panel-subtitle">
+              Numerically integrate dy/dx = f(x, y) with high accuracy
+            </p>
+          </div>
+          <div class="panel-formula glass-tag">
+            y<sub>n+1</sub> = yₙ + (h/6)(k₁ + 2k₂ + 2k₃ + k₄)
+          </div>
+        </div>
+
+        <div class="layout-two-col">
+          <div class="glass-card input-card">
+            <h3 class="card-title">Parameters</h3>
+
+            <div class="form-group">
+              <label class="form-label" for="rk4-function">
+                ODE function <span class="form-hint">dy/dx = f(x,y)</span>
+              </label>
+              <div class="input-wrapper">
+                <span class="input-prefix">dy/dx =</span>
+                <input
+                  id="rk4-function"
+                  class="form-input mono"
+                  type="text"
+                  placeholder="x + y"
+                  autocomplete="off"
+                  spellcheck="false"
+                />
+              </div>
+              <div class="input-examples">
+                <span class="example-label">Examples:</span>
+                <button class="example-btn" data-input="rk4-function" data-value="x + y">x + y</button>
+                <button class="example-btn" data-input="rk4-function" data-value="-2*y">−2y</button>
+                <button class="example-btn" data-input="rk4-function" data-value="sin(x)*y">sin(x)·y</button>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="rk4-x0">x₀</label>
+                <input id="rk4-x0" class="form-input mono" type="number" value="0" step="any" />
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="rk4-y0">y₀</label>
+                <input id="rk4-y0" class="form-input mono" type="number" value="1" step="any" />
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="rk4-xend">x_end</label>
+                <input id="rk4-xend" class="form-input mono" type="number" value="2" step="any" />
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="rk4-h">Step h</label>
+                <input id="rk4-h" class="form-input mono" type="number" value="0.1" step="any" />
+              </div>
+            </div>
+
+            <button id="rk4-solve-btn" class="solve-btn" data-method="rk4">
+              <span class="btn-icon">▶</span>
+              <span class="btn-text">Integrate</span>
+              <div class="btn-ripple"></div>
+            </button>
+          </div>
+
+          <div class="glass-card result-card" id="rk4-result-card">
+            <div class="result-placeholder" id="rk4-result-placeholder">
+              <div class="placeholder-icon">∂</div>
+              <p>Configure and run the ODE solver</p>
+            </div>
+            <div class="result-content hidden" id="rk4-result-content">
+              <h3 class="card-title">Result</h3>
+              <div class="stat-grid" id="rk4-stats"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="glass-card graph-card hidden" id="rk4-graph-card">
+          <div class="graph-header">
+            <h3 class="card-title">Solution Curve y(x)</h3>
+            <div class="graph-actions">
+              <button class="icon-btn" id="rk4-export-graph">⤓ PNG</button>
+              <button class="icon-btn" id="rk4-export-pdf">⬇ PDF</button>
+            </div>
+          </div>
+          <div class="canvas-wrap">
+            <canvas id="rk4-graph" class="result-graph"></canvas>
+            <div class="graph-tooltip" id="rk4-graph-tooltip"></div>
+          </div>
+        </div>
+
+        <div class="glass-card table-card hidden" id="rk4-table-card">
+          <h3 class="card-title">Step Table</h3>
+          <div class="table-scroll">
+            <table class="data-table" id="rk4-table">
+              <thead>
+                <tr>
+                  <th>Step</th>
+                  <th>x</th>
+                  <th>y</th>
+                  <th>k₁</th>
+                  <th>k₂</th>
+                  <th>k₃</th>
+                  <th>k₄</th>
+                  <th>y_new</th>
+                </tr>
+              </thead>
+              <tbody id="rk4-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- ERROR TOAST ────────────────────────────────────────────────────── -->
+    <div id="toast-container" role="alert" aria-live="polite"></div>
+
+  </div><!-- /#app -->
+
+  <!-- ═══ SCRIPTS ════════════════════════════════════════════════════════ -->
+  <script src="/static/js/utils.js"></script>
+  <script src="/static/js/background.js"></script>
+  <script src="/static/js/graph.js"></script>
+  <script src="/static/js/newton.js"></script>
+  <script src="/static/js/lagrange.js"></script>
+  <script src="/static/js/rk4.js"></script>
+  <script src="/static/js/app.js"></script>
+
+</body>
+</html>
